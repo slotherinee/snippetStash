@@ -80,25 +80,25 @@
         <button
           @click="activeTab = 'snippets'"
           class="flex-1 px-5 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-between sm:justify-center gap-2"
-          :class="activeTab === 'snippets' ? 'bg-accent text-white shadow-sm' : 'text-secondary hover:bg-surface-card'"
+          :class="activeTab === 'snippets' ? 'bg-surface-card border border-surface-border text-primary shadow-sm' : 'text-secondary hover:bg-surface-card border border-transparent'"
         >
           <span>Snippets</span>
           <span
             class="text-xs px-1.5 py-0.5 rounded-full font-mono"
-            :class="activeTab === 'snippets' ? 'bg-white/20 text-white' : 'bg-surface-card border border-surface-border text-muted'"
+            :class="activeTab === 'snippets' ? 'bg-surface-hover border border-surface-border text-secondary' : 'bg-surface-card border border-surface-border text-muted'"
           >{{ totalPosts }}</span>
         </button>
         <button
           v-if="isSelf"
           @click="onBookmarksTab"
           class="flex-1 px-5 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-between sm:justify-center gap-2"
-          :class="activeTab === 'bookmarks' ? 'bg-accent text-white shadow-sm' : 'text-secondary hover:bg-surface-card'"
+          :class="activeTab === 'bookmarks' ? 'bg-surface-card border border-surface-border text-primary shadow-sm' : 'text-secondary hover:bg-surface-card border border-transparent'"
         >
           <span>Bookmarks</span>
           <span
             v-if="bookmarkedPosts.length || bookmarksLoaded"
             class="text-xs px-1.5 py-0.5 rounded-full font-mono"
-            :class="activeTab === 'bookmarks' ? 'bg-white/20 text-white' : 'bg-surface-card border border-surface-border text-muted'"
+            :class="activeTab === 'bookmarks' ? 'bg-surface-hover border border-surface-border text-secondary' : 'bg-surface-card border border-surface-border text-muted'"
           >{{ bookmarkedPosts.length }}</span>
         </button>
       </div>
