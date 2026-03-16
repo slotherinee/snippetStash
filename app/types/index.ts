@@ -57,7 +57,7 @@ export interface Toast {
 }
 
 export const LANGUAGES = [
-  'HTML', 'CSS', 'JavaScript', 'TypeScript',
+  'HTML/CSS', 'JavaScript', 'TypeScript',
   'Vue', 'React', 'Python', 'Go', 'Rust',
   'SQL', 'Bash', 'JSON', 'Markdown', 'Other',
 ] as const
