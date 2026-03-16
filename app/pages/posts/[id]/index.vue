@@ -167,24 +167,24 @@
 
       <!-- Code / Preview tabs -->
       <div class="mb-8">
-        <div class="flex items-center justify-between mb-3">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
           <div class="flex gap-1">
             <button
               @click="activeTab = 'preview'"
-              class="px-4 py-1.5 rounded-lg text-sm font-medium transition-colors border"
+              class="flex-1 sm:flex-none px-4 py-2 sm:py-1.5 rounded-lg text-sm font-medium transition-colors border"
               :class="activeTab === 'preview' ? 'bg-accent-green/10 border-accent-green/40 text-accent-green' : 'border-surface-border hover:bg-surface-hover'"
               :style="activeTab !== 'preview' ? 'color: var(--text-secondary)' : ''"
             >▶ Preview</button>
             <button
               @click="activeTab = 'code'"
-              class="px-4 py-1.5 rounded-lg text-sm font-medium transition-colors border"
+              class="flex-1 sm:flex-none px-4 py-2 sm:py-1.5 rounded-lg text-sm font-medium transition-colors border"
               :class="activeTab === 'code' ? 'bg-accent/10 border-accent/40 text-accent' : 'border-surface-border hover:bg-surface-hover'"
               :style="activeTab !== 'code' ? 'color: var(--text-secondary)' : ''"
             >⟨/⟩ Code</button>
           </div>
           <button
             @click="showModal = true"
-            class="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border transition-colors font-mono"
+            class="w-full sm:w-auto flex items-center justify-center gap-1.5 text-xs px-3 py-2 sm:py-1.5 rounded-lg border transition-colors font-mono"
             style="border-color: var(--color-border); color: var(--text-muted)"
           >⛶ Fullscreen</button>
         </div>

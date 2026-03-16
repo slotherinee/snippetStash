@@ -50,6 +50,7 @@ definePageMeta({ layout: 'default' })
 useHead({ title: 'Browse Snippets — SnippetStash' })
 
 const route    = useRoute()
+const router   = useRouter()
 const { isLoggedIn } = useAuth()
 const { posts, meta, loading, fetchPosts } = usePosts()
 
@@ -92,10 +93,19 @@ function goToPage(p: number) {
 watch(search,   useDebounceFn(() => { page.value = 1; load() }, 350))
 watch(sortBy,   () => { page.value = 1; load() })
 watch(language, () => { page.value = 1; load() })
-watch(tag,      () => { page.value = 1; load() })
 
-// Sync tag from URL query when navigating via NuxtLink
-watch(() => route.query.tag, val => { tag.value = (val as string) ?? '' })
+// When tag changes — sync URL and reload
+watch(tag, (val) => {
+  router.replace({ query: { ...route.query, tag: val || undefined } })
+  page.value = 1
+  load()
+})
+
+// When URL query changes externally (NuxtLink click) — sync tag ref
+watch(() => route.query.tag, val => {
+  const v = (val as string) ?? ''
+  if (v !== tag.value) tag.value = v
+})
 
 onMounted(load)
 </script>
