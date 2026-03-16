@@ -1,0 +1,6 @@
+node_modules
+.env
+.nuxt
+.claude
+.DS_Store
+dist

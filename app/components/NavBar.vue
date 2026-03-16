@@ -14,6 +14,7 @@
       <!-- Nav links -->
       <div class="hidden sm:flex items-center gap-1">
         <NuxtLink to="/posts" class="nav-link">Browse</NuxtLink>
+        <NuxtLink to="/trending" class="nav-link">Trending</NuxtLink>
         <NuxtLink v-if="isLoggedIn" to="/create" class="nav-link">+ New Post</NuxtLink>
       </div>
 

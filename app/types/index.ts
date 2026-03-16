@@ -12,7 +12,10 @@ export interface Post {
   title: string
   description: string
   code: string
-  iframeUrl?: string
+  language?: string
+  tags?: string[]
+  likes?: number[]      // array of user IDs who liked
+  views?: number
   author_id: number
   createdAt: string
   users?: User
@@ -25,6 +28,12 @@ export interface Comment {
   text: string
   createdAt: string
   users?: User
+}
+
+export interface Bookmark {
+  id: number
+  user_id: number
+  post_id: number
 }
 
 export interface PaginationMeta {
@@ -45,3 +54,11 @@ export interface Toast {
   message: string
   type: 'success' | 'error' | 'info'
 }
+
+export const LANGUAGES = [
+  'HTML', 'CSS', 'JavaScript', 'TypeScript',
+  'Vue', 'React', 'Python', 'Go', 'Rust',
+  'SQL', 'Bash', 'JSON', 'Markdown', 'Other',
+] as const
+
+export type Language = typeof LANGUAGES[number]
