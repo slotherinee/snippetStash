@@ -75,10 +75,10 @@ const stats = computed(() => [
   { label: 'Free Forever', value: '∞' },
 ])
 
-watch(search, useDebounceFn(() => fetchPosts({ page: 1, limit: 6, search: search.value || undefined }), 300))
+watch(search, useDebounceFn(() => fetchPosts({ page: 1, limit: 6, search: search.value || undefined, sortBy: '-createdAt' }), 300))
 
 onMounted(async () => {
-  await fetchPosts({ page: 1, limit: 6 })
+  await fetchPosts({ page: 1, limit: 6, sortBy: '-createdAt' })
   try {
     const allRes = await getPosts({ page: 1, limit: 1 })
     totalPosts.value = allRes.meta.total_items

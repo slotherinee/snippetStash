@@ -27,8 +27,8 @@
         <option v-for="lang in LANGUAGES" :key="lang" :value="lang">{{ lang }}</option>
       </select>
       <select v-model="sortBy" class="input cursor-pointer flex-1">
-        <option value="createdAt">Newest first</option>
-        <option value="-createdAt">Oldest first</option>
+        <option value="-createdAt">Newest first</option>
+        <option value="createdAt">Oldest first</option>
       </select>
     </div>
 
@@ -55,7 +55,7 @@ const { isLoggedIn } = useAuth()
 const { posts, meta, loading, fetchPosts } = usePosts()
 
 const search   = ref('')
-const sortBy   = ref('createdAt')
+const sortBy   = ref('-createdAt')
 const language = ref('')
 const tag      = ref((route.query.tag as string) ?? '')
 const page     = ref(1)
