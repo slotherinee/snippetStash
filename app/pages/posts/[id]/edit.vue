@@ -27,7 +27,7 @@
         <textarea v-model="form.description" class="input resize-none" rows="3" required />
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label class="label">Language</label>
           <select v-model="form.language" class="input cursor-pointer">

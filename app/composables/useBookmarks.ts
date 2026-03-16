@@ -8,7 +8,7 @@ export function useBookmarks() {
   async function loadBookmarks() {
     if (!user.value) return
     try {
-      bookmarks.value = await api.getBookmarks(user.value.id)
+      bookmarks.value = await api.getBookmarks()
     } catch {
       bookmarks.value = []
     }

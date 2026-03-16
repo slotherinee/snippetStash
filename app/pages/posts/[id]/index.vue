@@ -18,7 +18,8 @@
     <div v-else class="max-w-4xl mx-auto">
       <!-- Header -->
       <div class="mb-6">
-        <div class="flex items-start justify-between gap-4 mb-3">
+        <!-- Title row — stacks on mobile -->
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2 flex-wrap mb-2">
               <span
@@ -26,25 +27,24 @@
                 class="text-xs font-mono px-2 py-0.5 rounded-full border"
                 style="border-color: var(--color-border); color: var(--text-muted)"
               >{{ post.language }}</span>
-              <span
+              <NuxtLink
                 v-for="tag in (post.tags ?? [])"
                 :key="tag"
-                class="text-xs px-2 py-0.5 rounded-full bg-accent/10 text-accent border border-accent/20"
-              >{{ tag }}</span>
+                :to="`/posts?tag=${encodeURIComponent(tag)}`"
+                class="text-xs px-2 py-0.5 rounded-full bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition-colors"
+              >#{{ tag }}</NuxtLink>
             </div>
-            <h1 class="text-3xl font-bold leading-tight" style="color: var(--text-primary)">{{ post.title }}</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold leading-tight" style="color: var(--text-primary)">{{ post.title }}</h1>
           </div>
 
-          <!-- Action buttons -->
-          <div class="flex items-center gap-2 flex-shrink-0">
+          <!-- Action buttons — wrap on mobile -->
+          <div class="flex items-center gap-1.5 flex-wrap">
             <!-- Like -->
             <button
               @click="handleLike"
               :disabled="!isLoggedIn"
               class="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-all"
-              :class="userLiked
-                ? 'bg-red-500/10 border-red-500/40 text-red-400'
-                : 'border-surface-border hover:bg-surface-hover'"
+              :class="userLiked ? 'bg-red-500/10 border-red-500/40 text-red-400' : 'border-surface-border hover:bg-surface-hover'"
               :style="!userLiked ? 'color: var(--text-muted)' : ''"
               :title="isLoggedIn ? (userLiked ? 'Unlike' : 'Like') : 'Login to like'"
             >
@@ -59,9 +59,7 @@
               @click="handleBookmark"
               :disabled="!isLoggedIn"
               class="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-all"
-              :class="bookmarked
-                ? 'bg-accent/10 border-accent/40 text-accent'
-                : 'border-surface-border hover:bg-surface-hover'"
+              :class="bookmarked ? 'bg-accent/10 border-accent/40 text-accent' : 'border-surface-border hover:bg-surface-hover'"
               :style="!bookmarked ? 'color: var(--text-muted)' : ''"
               :title="isLoggedIn ? (bookmarked ? 'Remove bookmark' : 'Bookmark') : 'Login to bookmark'"
             >
@@ -70,12 +68,29 @@
               </svg>
             </button>
 
+            <!-- Share -->
+            <button
+              @click="sharePost"
+              class="flex items-center gap-1.5 text-sm px-2.5 py-1.5 rounded-lg border transition-all"
+              :class="copied ? 'border-accent-green/40 bg-accent-green/10 text-accent-green' : 'border-surface-border hover:bg-surface-hover'"
+              :style="!copied ? 'color: var(--text-muted)' : ''"
+              title="Copy link"
+            >
+              <svg v-if="!copied" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+              </svg>
+              <svg v-else class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+              <span class="hidden sm:inline">{{ copied ? 'Copied!' : 'Share' }}</span>
+            </button>
+
             <!-- Download -->
             <button
               @click="downloadCode"
-              class="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-all border-surface-border hover:bg-surface-hover"
+              class="flex items-center gap-1.5 text-sm px-2.5 py-1.5 rounded-lg border border-surface-border hover:bg-surface-hover transition-all"
               style="color: var(--text-muted)"
-              title="Download code"
+              title="Download"
             >
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -86,35 +101,40 @@
             <button
               v-if="isLoggedIn"
               @click="forkPost"
-              class="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-all border-surface-border hover:bg-surface-hover"
+              class="flex items-center gap-1.5 text-sm px-2.5 py-1.5 rounded-lg border border-surface-border hover:bg-surface-hover transition-all"
               style="color: var(--text-muted)"
-              title="Fork this snippet"
+              title="Fork"
             >
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
               </svg>
-              Fork
+              <span class="hidden sm:inline">Fork</span>
             </button>
 
-            <!-- Edit (own post) -->
+            <!-- Edit -->
             <NuxtLink
               v-if="canEdit"
               :to="`/posts/${post.id}/edit`"
-              class="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition-all border-surface-border hover:bg-surface-hover"
+              class="flex items-center gap-1.5 text-sm px-2.5 py-1.5 rounded-lg border border-surface-border hover:bg-surface-hover transition-all"
               style="color: var(--text-muted)"
             >
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
               </svg>
-              Edit
+              <span class="hidden sm:inline">Edit</span>
             </NuxtLink>
 
-            <!-- Delete (admin) -->
+            <!-- Delete -->
             <button
               v-if="isAdmin"
               @click="handleDelete"
-              class="flex-shrink-0 text-sm px-3 py-1.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors"
-            >Delete</button>
+              class="text-sm px-2.5 py-1.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors"
+            >
+              <span class="hidden sm:inline">Delete</span>
+              <svg class="w-4 h-4 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -210,6 +230,7 @@ const post        = ref<Post | null>(null)
 const pending     = ref(true)
 const activeTab   = ref<'code' | 'preview'>('preview')
 const showModal   = ref(false)
+const copied      = ref(false)
 const likesCount  = computed(() => post.value?.likes?.length ?? 0)
 const userLiked   = computed(() => !!(user.value && post.value?.likes?.includes(user.value.id)))
 const bookmarked  = computed(() => isBookmarked(id))
@@ -253,6 +274,13 @@ async function handleBookmark() {
   if (!user.value) return
   await toggleBookmark(id)
   toastSuccess(bookmarked.value ? 'Bookmarked!' : 'Bookmark removed')
+}
+
+async function sharePost() {
+  await navigator.clipboard.writeText(window.location.href)
+  copied.value = true
+  toastSuccess('Link copied to clipboard!')
+  setTimeout(() => { copied.value = false }, 2000)
 }
 
 function downloadCode() {

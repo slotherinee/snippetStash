@@ -43,6 +43,7 @@ export interface GetPostsParams {
   author_id?: number
   sortBy?: string
   language?: string
+  tag?: string
 }
 
 export async function getPosts(params: GetPostsParams = {}): Promise<PaginatedResponse<Post>> {
@@ -53,6 +54,7 @@ export async function getPosts(params: GetPostsParams = {}): Promise<PaginatedRe
   if (params.search)    query['title'] = `*${params.search}*`
   if (params.author_id) query['author_id'] = params.author_id
   if (params.language)  query['language'] = params.language
+  if (params.tag)       query['tags'] = params.tag
   query['sortBy'] = params.sortBy ?? 'createdAt'
 
   const [postsRes, usersMap] = await Promise.all([
@@ -145,9 +147,10 @@ export async function deleteComment(id: number): Promise<void> {
 
 // ── Bookmarks ──────────────────────────────────────────────────────────────
 
-export async function getBookmarks(user_id: number): Promise<Bookmark[]> {
+export async function getBookmarks(_user_id?: number): Promise<Bookmark[]> {
+  // Fetch all bookmarks — user_id may be missing on older records,
+  // so we skip server-side filtering and handle it client-side
   return $fetch<Bookmark[]>(url('/bookmarks'), {
-    query: { user_id },
     headers: authHeaders(),
   })
 }

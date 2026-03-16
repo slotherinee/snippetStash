@@ -15,8 +15,9 @@
 
     <template v-else>
       <!-- Profile card -->
-      <div class="bg-surface-card border border-surface-border rounded-xl p-6 mb-8 flex items-center gap-5">
-        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-surface-border flex-shrink-0">
+      <div class="bg-surface-card border border-surface-border rounded-xl p-6 mb-8 flex flex-col items-center text-center gap-4">
+        <!-- Avatar -->
+        <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-surface-border flex-shrink-0">
           <img
             v-if="profile.avatar"
             :src="profile.avatar"
@@ -25,23 +26,40 @@
           />
           <div
             v-else
-            class="w-full h-full bg-gradient-to-br from-accent to-accent-purple flex items-center justify-center text-white text-2xl font-bold"
+            class="w-full h-full bg-gradient-to-br from-accent to-accent-purple flex items-center justify-center text-white text-3xl font-bold"
           >{{ profile.name.charAt(0).toUpperCase() }}</div>
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-2 flex-wrap">
+
+        <!-- Name + role -->
+        <div>
+          <div class="flex items-center justify-center gap-2 flex-wrap">
             <h1 class="text-xl font-bold" style="color: var(--text-primary)">{{ profile.name }}</h1>
             <span
               v-if="profile.role === 'admin'"
               class="text-xs px-2 py-0.5 rounded-full bg-accent-purple/20 text-accent-purple border border-accent-purple/30"
             >admin</span>
           </div>
-          <div class="flex items-center gap-4 mt-1 text-sm" style="color: var(--text-muted)">
-            <span>{{ totalPosts }} snippet{{ totalPosts !== 1 ? 's' : '' }}</span>
-            <span>{{ totalLikes }} total likes</span>
-            <span>{{ totalViews }} total views</span>
+        </div>
+
+        <!-- Stats row -->
+        <div class="flex items-center justify-center gap-6 text-sm">
+          <div class="flex flex-col items-center gap-0.5">
+            <span class="font-bold text-lg font-mono" style="color: var(--text-primary)">{{ totalPosts }}</span>
+            <span style="color: var(--text-muted)">Snippets</span>
+          </div>
+          <div class="w-px h-8" style="background: var(--color-border)" />
+          <div class="flex flex-col items-center gap-0.5">
+            <span class="font-bold text-lg font-mono" style="color: var(--text-primary)">{{ totalLikes }}</span>
+            <span style="color: var(--text-muted)">Likes</span>
+          </div>
+          <div class="w-px h-8" style="background: var(--color-border)" />
+          <div class="flex flex-col items-center gap-0.5">
+            <span class="font-bold text-lg font-mono" style="color: var(--text-primary)">{{ totalViews }}</span>
+            <span style="color: var(--text-muted)">Views</span>
           </div>
         </div>
+
+        <!-- Edit profile button (own profile) -->
         <NuxtLink
           v-if="isSelf"
           to="/settings"

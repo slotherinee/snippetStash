@@ -10,6 +10,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'SnippetStash',
+      viewport: 'width=device-width, initial-scale=1',
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
       meta: [{ name: 'description', content: 'Share and discover code snippets' }],
     },
     pageTransition: { name: 'page', mode: 'out-in' },

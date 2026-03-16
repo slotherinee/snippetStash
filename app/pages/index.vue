@@ -2,7 +2,7 @@
   <div>
     <!-- Hero -->
     <section class="text-center py-16 mb-12">
-      <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-white via-accent to-accent-purple bg-clip-text text-transparent">
+      <h1 class="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-white via-accent to-accent-purple bg-clip-text text-transparent">
         SnippetStash
       </h1>
       <p class="text-lg max-w-xl mx-auto mb-8" style="color: var(--text-secondary)">

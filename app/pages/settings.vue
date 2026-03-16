@@ -7,9 +7,9 @@
       <div class="p-6 border-b border-surface-border">
         <h2 class="text-sm font-semibold uppercase tracking-wide mb-4" style="color: var(--text-muted)">Profile Picture</h2>
 
-        <div class="flex items-center gap-5">
+        <div class="flex flex-col items-center gap-4">
           <!-- Avatar preview -->
-          <div class="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 border-2 border-surface-border">
+          <div class="w-24 h-24 rounded-full overflow-hidden flex-shrink-0 border-2 border-surface-border">
             <img
               v-if="avatarPreview"
               :src="avatarPreview"
@@ -19,12 +19,12 @@
             />
             <div
               v-else
-              class="w-full h-full bg-gradient-to-br from-accent to-accent-purple flex items-center justify-center text-white text-2xl font-bold"
+              class="w-full h-full bg-gradient-to-br from-accent to-accent-purple flex items-center justify-center text-white text-3xl font-bold"
             >{{ initial }}</div>
           </div>
 
-          <div class="flex-1">
-            <p class="text-sm mb-2" style="color: var(--text-secondary)">Paste a direct image URL</p>
+          <div class="w-full">
+            <p class="text-sm mb-2 text-center" style="color: var(--text-secondary)">Paste a direct image URL</p>
             <input
               v-model="form.avatar"
               type="url"
@@ -32,7 +32,7 @@
               placeholder="https://example.com/avatar.jpg"
               @input="avatarError = false"
             />
-            <p v-if="avatarError" class="text-xs text-red-400 mt-1">Image failed to load — check the URL</p>
+            <p v-if="avatarError" class="text-xs text-red-400 mt-1 text-center">Image failed to load — check the URL</p>
           </div>
         </div>
       </div>

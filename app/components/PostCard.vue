@@ -20,9 +20,19 @@
         style="color: var(--text-primary)"
       >{{ post.title }}</h3>
 
-      <p class="text-sm line-clamp-2 flex-1" style="color: var(--text-secondary)">
+      <p class="text-sm line-clamp-2" style="color: var(--text-secondary)">
         {{ post.description }}
       </p>
+
+      <!-- Tags -->
+      <div v-if="post.tags?.length" class="flex flex-wrap gap-1 mt-2">
+        <span
+          v-for="tag in post.tags"
+          :key="tag"
+          @click.prevent.stop="navigateTo(`/posts?tag=${encodeURIComponent(tag)}`)"
+          class="text-[11px] px-2 py-0.5 rounded-full bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition-colors cursor-pointer"
+        >#{{ tag }}</span>
+      </div>
 
       <!-- Footer -->
       <div class="flex items-center justify-between mt-3 text-xs" style="color: var(--text-muted)">

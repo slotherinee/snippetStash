@@ -6,7 +6,7 @@
     </div>
 
     <!-- Sort tabs -->
-    <div class="flex gap-2 mb-6">
+    <div class="flex flex-col sm:flex-row gap-2 mb-6">
       <button
         v-for="tab in tabs"
         :key="tab.value"
