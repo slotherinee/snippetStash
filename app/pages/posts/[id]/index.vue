@@ -84,7 +84,7 @@
                   style="background: var(--color-card); border-color: var(--color-border)"
                 >
                   <!-- Share -->
-                  <button @click="sharePost; actionsOpen = false" class="action-item w-full">
+                  <button @click="sharePost(); actionsOpen = false" class="action-item w-full">
                     <svg v-if="!copied" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
                     </svg>
@@ -95,7 +95,7 @@
                   </button>
 
                   <!-- Download -->
-                  <button @click="downloadCode; actionsOpen = false" class="action-item w-full">
+                  <button @click="downloadCode(); actionsOpen = false" class="action-item w-full">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                     </svg>
@@ -103,7 +103,7 @@
                   </button>
 
                   <!-- Fork -->
-                  <button v-if="isLoggedIn" @click="forkPost; actionsOpen = false" class="action-item w-full">
+                  <button v-if="isLoggedIn" @click="forkPost(); actionsOpen = false" class="action-item w-full">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
                     </svg>
@@ -121,7 +121,7 @@
                   <!-- Delete -->
                   <template v-if="isAdmin">
                     <div class="border-t mx-3 my-1" style="border-color: var(--color-border)" />
-                    <button @click="handleDelete; actionsOpen = false" class="action-item w-full text-red-400 hover:text-red-400">
+                    <button @click="handleDelete(); actionsOpen = false" class="action-item w-full text-red-400 hover:text-red-400">
                       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                       </svg>
@@ -290,10 +290,10 @@ async function sharePost() {
 
 function downloadCode() {
   if (!post.value) return
-  const ext = post.value.language?.toLowerCase() === 'html' ? 'html'
-    : post.value.language?.toLowerCase() === 'css' ? 'css'
+  const ext = post.value.language?.toLowerCase() === 'css' ? 'css'
     : post.value.language?.toLowerCase() === 'python' ? 'py'
-    : 'js'
+    : post.value.language?.toLowerCase() === 'javascript' ? 'js'
+    : 'html'
   const blob = new Blob([post.value.code], { type: 'text/plain' })
   const a    = document.createElement('a')
   a.href     = URL.createObjectURL(blob)
@@ -344,7 +344,7 @@ async function onComment(text: string) {
   if (!user.value) return
   commentLoading.value = true
   try {
-    await addComment({ post_id: id, author_id: user.value.id, text, createdAt: new Date().toISOString() })
+    await addComment({ post_id: id, author_id: user.value.id, text, createdAt: new Date().toISOString() }, user.value)
   } catch { toastError('Failed to post comment') }
   finally { commentLoading.value = false }
 }

@@ -18,19 +18,9 @@ export function useComments(postId: number) {
     }
   }
 
-  async function addComment(data: Omit<Comment, 'id'>) {
-    // Optimistic insert
-    const temp: Comment = { ...data, id: Date.now() }
-    comments.value.push(temp)
-    try {
-      const created = await api.createComment(data)
-      const idx = comments.value.findIndex(c => c.id === temp.id)
-      if (idx !== -1) comments.value[idx] = created
-    } catch (e) {
-      // rollback
-      comments.value = comments.value.filter(c => c.id !== temp.id)
-      throw e
-    }
+  async function addComment(data: Omit<Comment, 'id'>, users?: Comment['users']) {
+    const created = await api.createComment(data)
+    comments.value.push({ ...created, users })
   }
 
   async function removeComment(id: number) {
