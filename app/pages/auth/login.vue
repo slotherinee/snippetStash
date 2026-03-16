@@ -1,0 +1,55 @@
+<template>
+  <div class="max-w-sm mx-auto pt-8">
+    <div class="text-center mb-8">
+      <div class="text-4xl mb-3">🔐</div>
+      <h1 class="text-2xl font-bold" style="color: var(--text-primary)">Welcome back</h1>
+      <p class="text-sm mt-1" style="color: var(--text-muted)">Sign in to your account</p>
+    </div>
+
+    <form @submit.prevent="submit" class="bg-surface-card border border-surface-border rounded-2xl p-6 space-y-4">
+      <div>
+        <label class="label">Email</label>
+        <input v-model="email" type="email" class="input" placeholder="you@example.com" required autocomplete="email" />
+      </div>
+      <div>
+        <label class="label">Password</label>
+        <input v-model="password" type="password" class="input" placeholder="••••••••" required autocomplete="current-password" />
+      </div>
+
+      <div v-if="error" class="text-red-400 text-sm p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+        {{ error }}
+      </div>
+
+      <button type="submit" :disabled="loading" class="btn-primary w-full py-2.5 disabled:opacity-50 disabled:cursor-not-allowed">
+        <span v-if="loading">Signing in…</span>
+        <span v-else>Sign In</span>
+      </button>
+
+      <p class="text-center text-sm" style="color: var(--text-muted)">
+        No account? <NuxtLink to="/auth/register" class="text-accent hover:underline">Register</NuxtLink>
+      </p>
+    </form>
+  </div>
+</template>
+
+<script setup lang="ts">
+definePageMeta({ layout: 'default' })
+
+const { doLogin } = useAuth()
+const email = ref('')
+const password = ref('')
+const loading = ref(false)
+const error = ref<string | null>(null)
+
+async function submit() {
+  loading.value = true
+  error.value = null
+  try {
+    await doLogin(email.value, password.value)
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : 'Login failed'
+  } finally {
+    loading.value = false
+  }
+}
+</script>
