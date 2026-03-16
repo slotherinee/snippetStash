@@ -2,7 +2,7 @@
   <div>
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
       <div>
-        <h1 class="text-2xl font-bold" style="color: var(--text-primary)">All Snippets</h1>
+        <h1 class="text-2xl font-bold" style="color: var(--text-primary)">Browse</h1>
         <!-- Active tag badge -->
         <div v-if="tag" class="flex items-center gap-2 mt-1">
           <span class="text-sm" style="color: var(--text-muted)">Tag:</span>
@@ -12,7 +12,7 @@
           </span>
         </div>
       </div>
-      <NuxtLink v-if="isLoggedIn" to="/create" class="btn-primary text-sm text-center">+ New Snippet</NuxtLink>
+      <NuxtLink v-if="isLoggedIn" to="/create" class="btn-primary text-sm text-center">+ New</NuxtLink>
     </div>
 
     <!-- Search — full width -->

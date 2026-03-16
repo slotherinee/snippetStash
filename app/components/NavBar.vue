@@ -140,7 +140,7 @@
         <NuxtLink to="/posts"    class="mobile-nav-link" @click="menuOpen = false">Browse</NuxtLink>
         <NuxtLink to="/trending" class="mobile-nav-link" @click="menuOpen = false">Trending</NuxtLink>
         <NuxtLink v-if="isLoggedIn" to="/bookmarks" class="mobile-nav-link" @click="menuOpen = false">Bookmarks</NuxtLink>
-        <NuxtLink v-if="isLoggedIn" to="/create"    class="mobile-nav-link" @click="menuOpen = false">+ New Snippet</NuxtLink>
+        <NuxtLink v-if="isLoggedIn" to="/create"    class="mobile-nav-link" @click="menuOpen = false">+ New</NuxtLink>
         <div class="border-t border-surface-border my-1" />
         <template v-if="isLoggedIn">
           <NuxtLink :to="`/users/${user?.id}`" class="mobile-nav-link" @click="menuOpen = false">My Profile</NuxtLink>

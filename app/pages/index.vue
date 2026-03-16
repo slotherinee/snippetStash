@@ -9,9 +9,9 @@
         Share, discover, and learn from code snippets. A community-driven library of reusable code.
       </p>
       <div class="flex items-center justify-center gap-4 flex-wrap">
-        <NuxtLink to="/posts" class="btn-primary text-base px-6 py-3">Browse Snippets</NuxtLink>
+        <NuxtLink to="/posts" class="btn-primary text-base px-6 py-3">Browse</NuxtLink>
         <NuxtLink v-if="isLoggedIn" to="/create" class="btn-ghost text-base px-6 py-3 border border-surface-border">
-          Share a Snippet
+          Share Code
         </NuxtLink>
         <NuxtLink v-else to="/auth/register" class="btn-ghost text-base px-6 py-3 border border-surface-border">
           Join the Community
@@ -40,7 +40,7 @@
     <section>
       <div class="flex items-center justify-between mb-5">
         <h2 class="text-xl font-semibold" style="color: var(--text-primary)">
-          {{ search ? `Results for "${search}"` : 'Recent Snippets' }}
+          {{ search ? `Results for "${search}"` : 'Recent' }}
         </h2>
         <NuxtLink to="/posts" class="text-sm text-accent hover:text-accent/80 transition-colors">View all →</NuxtLink>
       </div>

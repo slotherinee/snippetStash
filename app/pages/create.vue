@@ -57,7 +57,7 @@
           </button>
           <button type="submit" :disabled="loading" class="btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
             <span v-if="loading">Publishing…</span>
-            <span v-else>Publish Snippet</span>
+            <span v-else>Publish</span>
           </button>
         </div>
       </div>
@@ -125,7 +125,7 @@
         </button>
         <button @click="submit" :disabled="loading" class="btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
           <span v-if="loading">Publishing…</span>
-          <span v-else>Publish Snippet</span>
+          <span v-else>Publish</span>
         </button>
       </div>
     </div>

@@ -17,7 +17,7 @@
       <p class="text-5xl mb-4">🔖</p>
       <h2 class="text-lg font-semibold mb-2" style="color: var(--text-primary)">No bookmarks yet</h2>
       <p class="text-sm mb-6" style="color: var(--text-muted)">Save snippets you want to come back to</p>
-      <NuxtLink to="/posts" class="btn-primary">Browse Snippets</NuxtLink>
+      <NuxtLink to="/posts" class="btn-primary">Browse All</NuxtLink>
     </div>
 
     <!-- Grid -->
