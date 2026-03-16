@@ -8,8 +8,8 @@
     <!-- Empty state -->
     <div v-else-if="posts.length === 0" class="text-center py-20 text-gray-500">
       <div class="text-5xl mb-4">📭</div>
-      <p class="text-lg font-medium text-gray-400">No snippets found</p>
-      <p class="text-sm mt-1">{{ emptyMessage }}</p>
+      <p class="text-lg font-medium text-gray-400">{{ t('common.noResults') }}</p>
+      <p class="text-sm mt-1">{{ emptyMessage || t('common.beFirst') }}</p>
     </div>
 
     <!-- Post grid with staggered animation -->
@@ -29,6 +29,8 @@
 <script setup lang="ts">
 import type { Post } from '~/types'
 
+const { t } = useI18n()
+
 withDefaults(defineProps<{
   posts: Post[]
   loading?: boolean
@@ -36,7 +38,6 @@ withDefaults(defineProps<{
   emptyMessage?: string
 }>(), {
   skeletonCount: 6,
-  emptyMessage: 'Be the first to share a snippet!',
 })
 </script>
 

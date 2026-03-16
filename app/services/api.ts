@@ -26,7 +26,7 @@ export async function getUser(id: number): Promise<User> {
   return $fetch(url(`/users/${id}`))
 }
 
-export async function updateUser(id: number, data: Partial<Pick<User, 'name' | 'avatar'>>): Promise<User> {
+export async function updateUser(id: number, data: Partial<Pick<User, 'name' | 'avatar' | 'language'>>): Promise<User> {
   return $fetch(url(`/users/${id}`), {
     method: 'PATCH',
     body: data,

@@ -4,43 +4,43 @@
     <!-- ── EDIT ───────────────────────────────────────────────── -->
     <form v-show="activeTab === 'Edit'" @submit.prevent="submit" class="space-y-5">
       <div>
-        <label class="label">Title <span class="text-red-400">*</span></label>
-        <input v-model="form.title" type="text" class="input" placeholder="A descriptive title…" required />
+        <label class="label">{{ t('create.titleLabel') }} <span class="text-red-400">*</span></label>
+        <input v-model="form.title" type="text" class="input" :placeholder="t('create.titlePlaceholder')" required />
       </div>
 
       <div>
-        <label class="label">Description <span class="text-red-400">*</span></label>
-        <textarea v-model="form.description" class="input resize-none" rows="3" placeholder="Explain what this snippet does…" required />
+        <label class="label">{{ t('create.descriptionLabel') }} <span class="text-red-400">*</span></label>
+        <textarea v-model="form.description" class="input resize-none" rows="3" :placeholder="t('create.descriptionPlaceholder')" required />
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label class="label">Language</label>
+          <label class="label">{{ t('create.languageLabel') }}</label>
           <select v-model="form.language" class="input cursor-pointer">
-            <option value="">Select language…</option>
+            <option value="">{{ t('create.selectLanguage') }}</option>
             <option v-for="lang in LANGUAGES" :key="lang" :value="lang">{{ lang }}</option>
           </select>
         </div>
         <div>
           <label class="label">
-            Tags
-            <span class="text-xs font-normal ml-1" style="color: var(--text-muted)">comma separated</span>
+            {{ t('create.tagsLabel') }}
+            <span class="text-xs font-normal ml-1" style="color: var(--text-muted)">{{ t('create.tagsHint') }}</span>
           </label>
-          <input v-model="tagsInput" type="text" class="input" placeholder="css, animation, grid…" />
+          <input v-model="tagsInput" type="text" class="input" :placeholder="t('create.tagsPlaceholder')" />
         </div>
       </div>
 
       <div>
         <label class="label">
-          Code <span class="text-red-400">*</span>
-          <span class="text-xs ml-2 font-normal" style="color: var(--text-muted)">HTML, CSS, JS — all supported for live preview</span>
+          {{ t('create.codeLabel') }} <span class="text-red-400">*</span>
+          <span class="text-xs ml-2 font-normal" style="color: var(--text-muted)">{{ t('create.codeHint') }}</span>
         </label>
         <textarea
           v-model="form.code"
           class="input font-mono resize-none"
           style="font-size: 0.8em"
           rows="16"
-          placeholder="// your code here…"
+          :placeholder="t('create.codePlaceholder')"
           required
         />
       </div>
@@ -50,14 +50,14 @@
       </div>
 
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-2">
-        <NuxtLink to="/posts" class="btn-ghost border border-surface-border text-center">Cancel</NuxtLink>
+        <NuxtLink to="/posts" class="btn-ghost border border-surface-border text-center">{{ t('create.cancel') }}</NuxtLink>
         <div class="flex flex-col sm:flex-row gap-2">
           <button type="button" @click="activeTab = 'Preview'" class="btn-ghost border border-surface-border text-center">
-            Preview
+            {{ t('create.preview') }}
           </button>
           <button type="submit" :disabled="loading" class="btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
-            <span v-if="loading">Publishing…</span>
-            <span v-else>Publish</span>
+            <span v-if="loading">{{ t('create.publishing') }}</span>
+            <span v-else>{{ t('create.publish') }}</span>
           </button>
         </div>
       </div>
@@ -84,12 +84,12 @@
         <h1
           class="text-xl sm:text-2xl font-bold leading-tight mb-2"
           :style="form.title ? 'color: var(--text-primary)' : 'color: var(--text-muted)'"
-        >{{ form.title || 'Untitled snippet' }}</h1>
+        >{{ form.title || t('create.untitled') }}</h1>
 
         <p
           class="text-sm leading-relaxed"
           :style="form.description ? 'color: var(--text-secondary)' : 'color: var(--text-muted)'"
-        >{{ form.description || 'No description yet.' }}</p>
+        >{{ form.description || t('create.noDescription') }}</p>
       </div>
 
       <!-- Code / Live preview tabs -->
@@ -100,7 +100,7 @@
             class="px-4 py-2 sm:py-1.5 rounded-lg text-sm font-medium transition-colors border"
             :class="codeTab === 'preview' ? 'bg-accent-green/10 border-accent-green/40 text-accent-green' : 'border-surface-border hover:bg-surface-hover'"
             :style="codeTab !== 'preview' ? 'color: var(--text-secondary)' : ''"
-          >▶ Live Preview</button>
+          >{{ t('create.livePreview') }}</button>
           <button
             @click="codeTab = 'code'"
             class="px-4 py-2 sm:py-1.5 rounded-lg text-sm font-medium transition-colors border"
@@ -110,7 +110,7 @@
         </div>
 
         <div v-if="!form.code" class="rounded-xl p-8 text-center text-sm" style="color: var(--text-muted); background: var(--surface-card); border: 1px solid var(--color-border)">
-          No code yet. Go back to Edit and write some code.
+          {{ t('create.noCode') }}
         </div>
         <template v-else>
           <CodePreview v-if="codeTab === 'preview'" :code="form.code" />
@@ -121,11 +121,11 @@
       <!-- Back to edit / Publish -->
       <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-1">
         <button @click="activeTab = 'Edit'" class="btn-ghost border border-surface-border text-center">
-          ← Back to Edit
+          {{ t('create.backToEdit') }}
         </button>
         <button @click="submit" :disabled="loading" class="btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
-          <span v-if="loading">Publishing…</span>
-          <span v-else>Publish</span>
+          <span v-if="loading">{{ t('create.publishing') }}</span>
+          <span v-else>{{ t('create.publish') }}</span>
         </button>
       </div>
     </div>
@@ -137,8 +137,9 @@
 import { LANGUAGES } from '~/types'
 
 definePageMeta({ layout: 'default', middleware: 'auth' })
-useHead({ title: 'Share a Snippet — SnippetStash' })
+useHead({ title: 'Create — SnippetStash' })
 
+const { t } = useI18n()
 const { user } = useAuth()
 const { success: toastSuccess } = useToast()
 const router = useRouter()
@@ -155,7 +156,6 @@ const parsedTags = computed(() =>
   tagsInput.value.split(',').map(t => t.trim()).filter(Boolean)
 )
 
-// Map LANGUAGES values to the keys CodeBlock understands
 const langKey = computed(() => form.language?.toLowerCase() || undefined)
 
 async function submit() {
@@ -176,7 +176,7 @@ async function submit() {
       likes:       [],
       views:       0,
     })
-    toastSuccess('Snippet published!')
+    toastSuccess(t('create.success'))
     router.push(`/posts/${post.id}`)
   } catch (e) {
     error.value = e instanceof Error ? e.message : 'Something went wrong'

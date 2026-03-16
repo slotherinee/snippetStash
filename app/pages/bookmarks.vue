@@ -2,8 +2,8 @@
   <div>
     <div class="flex items-center justify-between mb-8">
       <div>
-        <h1 class="text-2xl font-bold" style="color: var(--text-primary)">Bookmarks</h1>
-        <p class="text-sm mt-1" style="color: var(--text-muted)">Snippets you saved for later</p>
+        <h1 class="text-2xl font-bold" style="color: var(--text-primary)">{{ t('bookmarks.title') }}</h1>
+        <p class="text-sm mt-1" style="color: var(--text-muted)">{{ t('bookmarks.subtitle') }}</p>
       </div>
     </div>
 
@@ -15,9 +15,9 @@
     <!-- Empty -->
     <div v-else-if="posts.length === 0" class="text-center py-24">
       <p class="text-5xl mb-4">🔖</p>
-      <h2 class="text-lg font-semibold mb-2" style="color: var(--text-primary)">No bookmarks yet</h2>
-      <p class="text-sm mb-6" style="color: var(--text-muted)">Save snippets you want to come back to</p>
-      <NuxtLink to="/posts" class="btn-primary">Browse All</NuxtLink>
+      <h2 class="text-lg font-semibold mb-2" style="color: var(--text-primary)">{{ t('bookmarks.empty') }}</h2>
+      <p class="text-sm mb-6" style="color: var(--text-muted)">{{ t('bookmarks.emptyHint') }}</p>
+      <NuxtLink to="/posts" class="btn-primary">{{ t('bookmarks.browseAll') }}</NuxtLink>
     </div>
 
     <!-- Grid -->
@@ -40,6 +40,7 @@ import type { Post } from '~/types'
 definePageMeta({ layout: 'default', middleware: 'auth' })
 useHead({ title: 'Bookmarks — SnippetStash' })
 
+const { t } = useI18n()
 const { user } = useAuth()
 
 const posts   = ref<Post[]>([])

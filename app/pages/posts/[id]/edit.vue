@@ -1,9 +1,9 @@
 <template>
   <div class="max-w-2xl mx-auto">
     <div class="flex items-center gap-3 mb-8">
-      <NuxtLink :to="`/posts/${id}`" class="text-accent hover:underline text-sm">← Back to snippet</NuxtLink>
+      <NuxtLink :to="`/posts/${id}`" class="text-accent hover:underline text-sm">{{ t('edit.backToPost') }}</NuxtLink>
       <span style="color: var(--text-muted)">/</span>
-      <h1 class="text-2xl font-bold" style="color: var(--text-primary)">Edit Snippet</h1>
+      <h1 class="text-2xl font-bold" style="color: var(--text-primary)">{{ t('edit.title') }}</h1>
     </div>
 
     <div v-if="pending" class="space-y-4">
@@ -13,39 +13,39 @@
     </div>
 
     <div v-else-if="!post" class="text-center py-20">
-      <p style="color: var(--text-muted)">Snippet not found or you don't have permission to edit it.</p>
+      <p style="color: var(--text-muted)">{{ t('edit.notFound') }}</p>
     </div>
 
     <form v-else @submit.prevent="submit" class="space-y-5">
       <div>
-        <label class="label">Title <span class="text-red-400">*</span></label>
+        <label class="label">{{ t('create.titleLabel') }} <span class="text-red-400">*</span></label>
         <input v-model="form.title" type="text" class="input" required />
       </div>
 
       <div>
-        <label class="label">Description <span class="text-red-400">*</span></label>
+        <label class="label">{{ t('create.descriptionLabel') }} <span class="text-red-400">*</span></label>
         <textarea v-model="form.description" class="input resize-none" rows="3" required />
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label class="label">Language</label>
+          <label class="label">{{ t('create.languageLabel') }}</label>
           <select v-model="form.language" class="input cursor-pointer">
-            <option value="">Select language…</option>
+            <option value="">{{ t('create.selectLanguage') }}</option>
             <option v-for="lang in LANGUAGES" :key="lang" :value="lang">{{ lang }}</option>
           </select>
         </div>
         <div>
           <label class="label">
-            Tags
-            <span class="text-xs font-normal ml-1" style="color: var(--text-muted)">comma separated</span>
+            {{ t('create.tagsLabel') }}
+            <span class="text-xs font-normal ml-1" style="color: var(--text-muted)">{{ t('create.tagsHint') }}</span>
           </label>
-          <input v-model="tagsInput" type="text" class="input" placeholder="css, animation…" />
+          <input v-model="tagsInput" type="text" class="input" :placeholder="t('create.tagsPlaceholder')" />
         </div>
       </div>
 
       <div>
-        <label class="label">Code <span class="text-red-400">*</span></label>
+        <label class="label">{{ t('create.codeLabel') }} <span class="text-red-400">*</span></label>
         <textarea
           v-model="form.code"
           class="input font-mono resize-none"
@@ -60,10 +60,10 @@
       </div>
 
       <div class="flex items-center justify-between pt-2">
-        <NuxtLink :to="`/posts/${id}`" class="btn-ghost border border-surface-border">Cancel</NuxtLink>
+        <NuxtLink :to="`/posts/${id}`" class="btn-ghost border border-surface-border">{{ t('edit.cancel') }}</NuxtLink>
         <button type="submit" :disabled="saving" class="btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
-          <span v-if="saving">Saving…</span>
-          <span v-else>Save Changes</span>
+          <span v-if="saving">{{ t('edit.saving') }}</span>
+          <span v-else>{{ t('edit.save') }}</span>
         </button>
       </div>
     </form>
@@ -76,6 +76,7 @@ import type { Post } from '~/types'
 
 definePageMeta({ layout: 'default', middleware: 'auth' })
 
+const { t } = useI18n()
 const route  = useRoute()
 const router = useRouter()
 const id     = Number(route.params.id)
@@ -95,7 +96,6 @@ onMounted(async () => {
   try {
     const { getPost } = await import('~/services/api')
     const p = await getPost(id)
-    // Access control — only owner or admin
     if (p.author_id !== user.value?.id && !isAdmin.value) {
       router.replace(`/posts/${id}`)
       return
@@ -126,7 +126,7 @@ async function submit() {
       language:    form.language || undefined,
       tags:        tags.length ? tags : undefined,
     })
-    toastSuccess('Snippet updated!')
+    toastSuccess(t('edit.success'))
     router.push(`/posts/${id}`)
   } catch (e) {
     error.value = e instanceof Error ? e.message : 'Failed to save'

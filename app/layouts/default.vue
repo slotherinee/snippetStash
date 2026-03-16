@@ -11,8 +11,10 @@
 <script setup lang="ts">
 const { init: initAuth } = useAuth()
 const { init: initTheme } = useTheme()
+const { init: initLang } = useLanguage()
 onMounted(() => {
   initTheme()
   initAuth()
+  initLang()
 })
 </script>

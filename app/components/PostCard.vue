@@ -82,10 +82,11 @@
 <script setup lang="ts">
 import type { Post } from '~/types'
 
+const { locale } = useI18n()
 const props = defineProps<{ post: Post }>()
 const likesCount = computed(() => props.post.likes?.length ?? 0)
 
 function formatDate(d: string) {
-  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  return new Date(d).toLocaleDateString(locale.value === 'ru' ? 'ru-RU' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 </script>

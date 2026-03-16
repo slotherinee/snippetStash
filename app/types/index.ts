@@ -5,6 +5,7 @@ export interface User {
   password: string
   role: 'user' | 'admin'
   avatar?: string
+  language?: string
 }
 
 export interface Post {

@@ -13,14 +13,22 @@
 
       <!-- Desktop nav links -->
       <div class="hidden sm:flex items-center gap-1 flex-1">
-        <NuxtLink to="/posts" class="nav-link">Browse</NuxtLink>
-        <NuxtLink to="/trending" class="nav-link">Trending</NuxtLink>
-        <NuxtLink v-if="isLoggedIn" to="/bookmarks" class="nav-link">Bookmarks</NuxtLink>
-        <NuxtLink v-if="isLoggedIn" to="/create" class="nav-link">+ New</NuxtLink>
+        <NuxtLink to="/posts" class="nav-link">{{ t('nav.browse') }}</NuxtLink>
+        <NuxtLink to="/trending" class="nav-link">{{ t('nav.trending') }}</NuxtLink>
+        <NuxtLink v-if="isLoggedIn" to="/bookmarks" class="nav-link">{{ t('nav.bookmarks') }}</NuxtLink>
+        <NuxtLink v-if="isLoggedIn" to="/create" class="nav-link">{{ t('nav.new') }}</NuxtLink>
       </div>
 
       <!-- Right side -->
       <div class="flex items-center gap-1.5">
+        <!-- Language toggle (desktop) -->
+        <button
+          @click="toggleLocale"
+          class="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-xs font-mono font-bold transition-colors hover:bg-surface-hover"
+          style="color: var(--text-muted)"
+          :title="locale === 'en' ? 'Switch to Russian' : 'Switch to English'"
+        >{{ locale === 'en' ? 'RU' : 'EN' }}</button>
+
         <!-- Theme toggle -->
         <button
           @click="toggle"
@@ -74,7 +82,7 @@
                   <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
                   </svg>
-                  My Profile
+                  {{ t('nav.myProfile') }}
                 </NuxtLink>
                 <NuxtLink
                   to="/settings"
@@ -85,7 +93,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                   </svg>
-                  Settings
+                  {{ t('nav.settings') }}
                 </NuxtLink>
                 <div class="border-t mx-3 my-1" style="border-color: var(--color-border)" />
                 <button
@@ -95,15 +103,15 @@
                   <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
                   </svg>
-                  Logout
+                  {{ t('nav.logout') }}
                 </button>
               </div>
             </Transition>
           </div>
         </template>
         <template v-else>
-          <NuxtLink to="/auth/login" class="hidden sm:block btn-ghost text-sm">Login</NuxtLink>
-          <NuxtLink to="/auth/register" class="btn-primary text-sm">Register</NuxtLink>
+          <NuxtLink to="/auth/login" class="hidden sm:block btn-ghost text-sm">{{ t('nav.login') }}</NuxtLink>
+          <NuxtLink to="/auth/register" class="btn-primary text-sm">{{ t('nav.register') }}</NuxtLink>
         </template>
 
         <!-- Avatar (mobile only, no dropdown — use burger menu) -->
@@ -137,20 +145,25 @@
         v-if="menuOpen"
         class="sm:hidden border-t border-surface-border bg-surface/95 backdrop-blur-md px-4 py-3 flex flex-col gap-1"
       >
-        <NuxtLink to="/posts"    class="mobile-nav-link" @click="menuOpen = false">Browse</NuxtLink>
-        <NuxtLink to="/trending" class="mobile-nav-link" @click="menuOpen = false">Trending</NuxtLink>
-        <NuxtLink v-if="isLoggedIn" to="/bookmarks" class="mobile-nav-link" @click="menuOpen = false">Bookmarks</NuxtLink>
-        <NuxtLink v-if="isLoggedIn" to="/create"    class="mobile-nav-link" @click="menuOpen = false">+ New</NuxtLink>
+        <NuxtLink to="/posts"    class="mobile-nav-link" @click="menuOpen = false">{{ t('nav.browse') }}</NuxtLink>
+        <NuxtLink to="/trending" class="mobile-nav-link" @click="menuOpen = false">{{ t('nav.trending') }}</NuxtLink>
+        <NuxtLink v-if="isLoggedIn" to="/bookmarks" class="mobile-nav-link" @click="menuOpen = false">{{ t('nav.bookmarks') }}</NuxtLink>
+        <NuxtLink v-if="isLoggedIn" to="/create"    class="mobile-nav-link" @click="menuOpen = false">{{ t('nav.new') }}</NuxtLink>
         <div class="border-t border-surface-border my-1" />
         <template v-if="isLoggedIn">
-          <NuxtLink :to="`/users/${user?.id}`" class="mobile-nav-link" @click="menuOpen = false">My Profile</NuxtLink>
-          <NuxtLink to="/settings" class="mobile-nav-link" @click="menuOpen = false">Settings</NuxtLink>
-          <button @click="() => { logout(); menuOpen = false }" class="mobile-nav-link text-left text-red-400">Logout</button>
+          <NuxtLink :to="`/users/${user?.id}`" class="mobile-nav-link" @click="menuOpen = false">{{ t('nav.myProfile') }}</NuxtLink>
+          <NuxtLink to="/settings" class="mobile-nav-link" @click="menuOpen = false">{{ t('nav.settings') }}</NuxtLink>
+          <button @click="() => { logout(); menuOpen = false }" class="mobile-nav-link text-left text-red-400">{{ t('nav.logout') }}</button>
         </template>
         <template v-else>
-          <NuxtLink to="/auth/login"    class="mobile-nav-link" @click="menuOpen = false">Login</NuxtLink>
-          <NuxtLink to="/auth/register" class="mobile-nav-link" @click="menuOpen = false">Register</NuxtLink>
+          <NuxtLink to="/auth/login"    class="mobile-nav-link" @click="menuOpen = false">{{ t('nav.login') }}</NuxtLink>
+          <NuxtLink to="/auth/register" class="mobile-nav-link" @click="menuOpen = false">{{ t('nav.register') }}</NuxtLink>
         </template>
+        <div class="border-t border-surface-border my-1" />
+        <!-- Language toggle (mobile) -->
+        <button @click="toggleLocale" class="mobile-nav-link text-left font-mono font-bold" style="color: var(--text-muted)">
+          {{ locale === 'en' ? '🌐 Русский' : '🌐 English' }}
+        </button>
       </div>
     </Transition>
   </nav>
@@ -159,6 +172,8 @@
 <script setup lang="ts">
 const { user, isLoggedIn, isAdmin, logout } = useAuth()
 const { isDark, toggle } = useTheme()
+const { t } = useI18n()
+const { locale, toggleLocale } = useLanguage()
 
 const menuOpen    = ref(false)
 const dropdownOpen = ref(false)

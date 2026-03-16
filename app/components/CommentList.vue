@@ -5,7 +5,7 @@
     </div>
 
     <div v-else-if="comments.length === 0" class="text-center py-8 text-sm" style="color: var(--text-muted)">
-      No comments yet. Be the first!
+      {{ t('comment.noComments') }}
     </div>
 
     <TransitionGroup v-else name="comment" tag="div" class="space-y-3">
@@ -28,14 +28,14 @@
                 class="w-full h-full bg-gradient-to-br from-accent-purple to-accent flex items-center justify-center text-white text-xs font-bold"
               >{{ (comment.users?.name ?? 'U').charAt(0).toUpperCase() }}</div>
             </div>
-            <span class="text-sm font-medium" style="color: var(--text-primary)">{{ comment.users?.name ?? 'Unknown' }}</span>
+            <span class="text-sm font-medium" style="color: var(--text-primary)">{{ comment.users?.name ?? t('comment.unknown') }}</span>
             <time class="text-xs" style="color: var(--text-muted)">{{ formatDate(comment.createdAt) }}</time>
           </div>
           <button
             v-if="canDelete(comment)"
             @click="emit('delete', comment.id)"
             class="opacity-0 group-hover:opacity-100 text-xs text-red-400 hover:text-red-300 transition-all"
-          >Delete</button>
+          >{{ t('comment.delete') }}</button>
         </div>
         <p class="text-sm leading-relaxed pl-9" style="color: var(--text-secondary)">{{ comment.text }}</p>
       </div>
@@ -46,6 +46,7 @@
 <script setup lang="ts">
 import type { Comment } from '~/types'
 
+const { t, locale } = useI18n()
 const props = defineProps<{ comments: Comment[]; loading?: boolean }>()
 const emit = defineEmits<{ delete: [id: number] }>()
 
@@ -57,7 +58,7 @@ function canDelete(comment: Comment) {
 }
 
 function formatDate(d: string) {
-  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  return new Date(d).toLocaleDateString(locale.value === 'ru' ? 'ru-RU' : 'en-US', { month: 'short', day: 'numeric' })
 }
 </script>
 

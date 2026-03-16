@@ -6,15 +6,15 @@
         SnippetStash
       </h1>
       <p class="text-lg max-w-xl mx-auto mb-8" style="color: var(--text-secondary)">
-        Share, discover, and learn from code snippets. A community-driven library of reusable code.
+        {{ t('home.description') }}
       </p>
       <div class="flex items-center justify-center gap-4 flex-wrap">
-        <NuxtLink to="/posts" class="btn-primary text-base px-6 py-3">Browse</NuxtLink>
+        <NuxtLink to="/posts" class="btn-primary text-base px-6 py-3">{{ t('home.browse') }}</NuxtLink>
         <NuxtLink v-if="isLoggedIn" to="/create" class="btn-ghost text-base px-6 py-3 border border-surface-border">
-          Share Code
+          {{ t('home.shareCode') }}
         </NuxtLink>
         <NuxtLink v-else to="/auth/register" class="btn-ghost text-base px-6 py-3 border border-surface-border">
-          Join the Community
+          {{ t('home.joinCommunity') }}
         </NuxtLink>
       </div>
     </section>
@@ -33,16 +33,16 @@
 
     <!-- Search -->
     <div class="mb-8">
-      <SearchBar v-model="search" placeholder="Search snippets…" />
+      <SearchBar v-model="search" :placeholder="t('home.searchPlaceholder')" />
     </div>
 
     <!-- Recent posts -->
     <section>
       <div class="flex items-center justify-between mb-5">
         <h2 class="text-xl font-semibold" style="color: var(--text-primary)">
-          {{ search ? `Results for "${search}"` : 'Recent' }}
+          {{ search ? t('home.resultsFor', { q: search }) : t('home.recent') }}
         </h2>
-        <NuxtLink to="/posts" class="text-sm text-accent hover:text-accent/80 transition-colors">View all →</NuxtLink>
+        <NuxtLink to="/posts" class="text-sm text-accent hover:text-accent/80 transition-colors">{{ t('home.viewAll') }}</NuxtLink>
       </div>
       <PostList :posts="posts" :loading="loading" />
     </section>
@@ -62,6 +62,7 @@ useHead({
   ],
 })
 
+const { t } = useI18n()
 const { isLoggedIn } = useAuth()
 const { posts, loading, fetchPosts } = usePosts()
 const search = ref('')
@@ -69,10 +70,10 @@ const totalPosts = ref(0)
 const totalUsers = ref(0)
 
 const stats = computed(() => [
-  { label: 'Snippets', value: totalPosts.value },
-  { label: 'Members', value: totalUsers.value },
-  { label: 'Languages', value: '10+' },
-  { label: 'Free Forever', value: '∞' },
+  { label: t('home.stats.snippets'), value: totalPosts.value },
+  { label: t('home.stats.members'), value: totalUsers.value },
+  { label: t('home.stats.languages'), value: '10+' },
+  { label: t('home.stats.free'), value: '∞' },
 ])
 
 watch(search, useDebounceFn(() => fetchPosts({ page: 1, limit: 6, search: search.value || undefined, sortBy: '-createdAt' }), 300))

@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="mb-8">
-      <h1 class="text-2xl font-bold mb-1" style="color: var(--text-primary)">Trending Snippets</h1>
-      <p class="text-sm" style="color: var(--text-muted)">Most liked and viewed snippets from the community</p>
+      <h1 class="text-2xl font-bold mb-1" style="color: var(--text-primary)">{{ t('trending.title') }}</h1>
+      <p class="text-sm" style="color: var(--text-muted)">{{ t('trending.subtitle') }}</p>
     </div>
 
     <!-- Sort tabs -->
@@ -25,7 +25,7 @@
 
     <div v-else-if="sorted.length === 0" class="text-center py-20">
       <p class="text-4xl mb-3">📭</p>
-      <p style="color: var(--text-muted)">No snippets yet</p>
+      <p style="color: var(--text-muted)">{{ t('trending.empty') }}</p>
     </div>
 
     <div v-else class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -48,13 +48,14 @@ import type { Post } from '~/types'
 definePageMeta({ layout: 'default' })
 useHead({ title: 'Trending — SnippetStash' })
 
-const tabs = [
-  { value: 'likes',  label: '♥ Most Liked'   },
-  { value: 'views',  label: '👁 Most Viewed'  },
-  { value: 'newest', label: '✦ Newest'        },
-]
+const { t } = useI18n()
 
-// gold / silver / bronze outlines + glows
+const tabs = computed(() => [
+  { value: 'likes'  as const, label: t('trending.mostLiked')  },
+  { value: 'views'  as const, label: t('trending.mostViewed') },
+  { value: 'newest' as const, label: t('trending.newest')     },
+])
+
 function rankClass(i: number) {
   if (i === 0) return 'ring-2 ring-yellow-400/70 shadow-[0_0_20px_-4px_rgba(250,204,21,0.45)]'
   if (i === 1) return 'ring-2 ring-slate-400/60 shadow-[0_0_20px_-4px_rgba(148,163,184,0.35)]'
@@ -76,7 +77,6 @@ const sorted = computed(() => {
 onMounted(async () => {
   try {
     const { getPosts } = await import('~/services/api')
-    // Fetch up to 50 posts for client-side ranking
     const res = await getPosts({ page: 1, limit: 50, sortBy: 'createdAt' })
     posts.value = res.items
   } catch {

@@ -18,11 +18,11 @@
     </p>
 
     <div class="flex flex-col sm:flex-row items-center gap-3">
-      <button @click="handleError" class="btn-primary px-6">Go Home</button>
+      <button @click="handleError" class="btn-primary px-6">{{ t('error.goHome') }}</button>
       <button
         @click="() => history.back()"
         class="btn-ghost border border-surface-border px-6"
-      >Go Back</button>
+      >{{ t('error.goBack') }}</button>
     </div>
   </div>
 </template>
@@ -31,20 +31,19 @@
 import type { NuxtError } from '#app'
 
 const props = defineProps<{ error: NuxtError | null }>()
+const { t } = useI18n()
 
 const title = computed(() => {
-  if (props.error?.statusCode === 404) return 'Page not found'
-  if (props.error?.statusCode === 403) return 'Access denied'
-  if (props.error?.statusCode === 500) return 'Server error'
-  return 'Something went wrong'
+  if (props.error?.statusCode === 404) return t('error.notFound')
+  if (props.error?.statusCode === 403) return t('error.accessDenied')
+  if (props.error?.statusCode === 500) return t('error.serverError')
+  return t('error.unknown')
 })
 
 const message = computed(() => {
-  if (props.error?.statusCode === 404)
-    return "The snippet or page you're looking for doesn't exist or was removed."
-  if (props.error?.statusCode === 403)
-    return "You don't have permission to view this page."
-  return props.error?.message ?? 'An unexpected error occurred. Please try again.'
+  if (props.error?.statusCode === 404) return t('error.notFoundMsg')
+  if (props.error?.statusCode === 403) return t('error.accessDeniedMsg')
+  return props.error?.message ?? t('error.unknownMsg')
 })
 
 function handleError() {

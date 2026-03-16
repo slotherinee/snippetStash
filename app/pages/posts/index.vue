@@ -2,42 +2,42 @@
   <div>
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
       <div>
-        <h1 class="text-2xl font-bold" style="color: var(--text-primary)">Browse</h1>
+        <h1 class="text-2xl font-bold" style="color: var(--text-primary)">{{ t('posts.title') }}</h1>
         <!-- Active tag badge -->
         <div v-if="tag" class="flex items-center gap-2 mt-1">
-          <span class="text-sm" style="color: var(--text-muted)">Tag:</span>
+          <span class="text-sm" style="color: var(--text-muted)">{{ t('posts.tag') }}</span>
           <span class="flex items-center gap-1 text-sm px-2 py-0.5 rounded-full bg-accent/10 text-accent border border-accent/20">
             #{{ tag }}
             <button @click="tag = ''" class="hover:text-white transition-colors leading-none ml-0.5">✕</button>
           </span>
         </div>
       </div>
-      <NuxtLink v-if="isLoggedIn" to="/create" class="btn-primary text-sm text-center">+ New</NuxtLink>
+      <NuxtLink v-if="isLoggedIn" to="/create" class="btn-primary text-sm text-center">{{ t('posts.new') }}</NuxtLink>
     </div>
 
     <!-- Search — full width -->
     <div class="mb-3">
-      <SearchBar v-model="search" placeholder="Search by title…" />
+      <SearchBar v-model="search" :placeholder="t('posts.searchPlaceholder')" />
     </div>
 
     <!-- Filters row -->
     <div class="flex gap-3 mb-6">
       <select v-model="language" class="input cursor-pointer flex-1">
-        <option value="">All languages</option>
+        <option value="">{{ t('posts.allLanguages') }}</option>
         <option v-for="lang in LANGUAGES" :key="lang" :value="lang">{{ lang }}</option>
       </select>
       <select v-model="sortBy" class="input cursor-pointer flex-1">
-        <option value="-createdAt">Newest first</option>
-        <option value="createdAt">Oldest first</option>
+        <option value="-createdAt">{{ t('posts.newestFirst') }}</option>
+        <option value="createdAt">{{ t('posts.oldestFirst') }}</option>
       </select>
     </div>
 
-    <PostList :posts="posts" :loading="loading" empty-message="No snippets match your search." />
+    <PostList :posts="posts" :loading="loading" :empty-message="t('posts.noResults')" />
 
     <div v-if="meta && meta.total_pages > 1" class="mt-8 flex flex-col items-center gap-3">
       <Pagination :current-page="meta.current_page" :total-pages="meta.total_pages" @go="goToPage" />
       <p class="text-xs" style="color: var(--text-muted)">
-        Showing {{ posts.length }} of {{ meta.total_items }} snippets
+        {{ t('posts.showing', { count: posts.length, total: meta.total_items }) }}
       </p>
     </div>
   </div>
@@ -47,8 +47,9 @@
 import { LANGUAGES } from '~/types'
 
 definePageMeta({ layout: 'default' })
-useHead({ title: 'Browse Snippets — SnippetStash' })
+useHead({ title: 'Browse — SnippetStash' })
 
+const { t } = useI18n()
 const route    = useRoute()
 const router   = useRouter()
 const { isLoggedIn } = useAuth()
@@ -62,7 +63,6 @@ const page     = ref(1)
 
 async function load() {
   if (tag.value) {
-    // Mokky can't filter array fields server-side — fetch all and filter client-side
     await fetchPosts({
       page:     1,
       limit:    200,
@@ -94,14 +94,12 @@ watch(search,   useDebounceFn(() => { page.value = 1; load() }, 350))
 watch(sortBy,   () => { page.value = 1; load() })
 watch(language, () => { page.value = 1; load() })
 
-// When tag changes — sync URL and reload
 watch(tag, (val) => {
   router.replace({ query: { ...route.query, tag: val || undefined } })
   page.value = 1
   load()
 })
 
-// When URL query changes externally (NuxtLink click) — sync tag ref
 watch(() => route.query.tag, val => {
   const v = (val as string) ?? ''
   if (v !== tag.value) tag.value = v
