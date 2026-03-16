@@ -5,7 +5,7 @@ export const ru: Translations = {
     browse: 'Обзор',
     trending: 'В тренде',
     bookmarks: 'Закладки',
-    new: '+ Новый',
+    new: '+ Создать',
     login: 'Войти',
     register: 'Регистрация',
     myProfile: 'Мой профиль',
@@ -30,7 +30,7 @@ export const ru: Translations = {
   },
   posts: {
     title: 'Обзор',
-    new: '+ Новый',
+    new: '+ Создать',
     searchPlaceholder: 'Поиск по названию…',
     allLanguages: 'Все языки',
     newestFirst: 'Новые сначала',
