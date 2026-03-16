@@ -15,7 +15,7 @@
 
     <template v-else>
       <!-- Profile card -->
-      <div class="bg-surface-card border border-surface-border rounded-xl p-6 mb-8 flex flex-col items-center text-center gap-4">
+      <div class="bg-surface-card border border-surface-border rounded-xl p-6 mb-6 flex flex-col items-center text-center gap-4">
         <!-- Avatar -->
         <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-surface-border flex-shrink-0">
           <img
@@ -33,16 +33,17 @@
         <!-- Name + role -->
         <div>
           <div class="flex items-center justify-center gap-2 flex-wrap">
-            <h1 class="text-xl font-bold" style="color: var(--text-primary)">{{ profile.name }}</h1>
-            <span
-              v-if="profile.role === 'admin'"
-              class="text-xs px-2 py-0.5 rounded-full bg-accent-purple/20 text-accent-purple border border-accent-purple/30"
-            >admin</span>
+            <h1
+              class="text-xl font-bold"
+              :style="profile.role === 'admin'
+                ? 'background: linear-gradient(90deg, #bc8cff, #79c0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text'
+                : 'color: var(--text-primary)'"
+            >{{ profile.name }}</h1>
           </div>
         </div>
 
         <!-- Stats row -->
-        <div class="flex items-center justify-center gap-6 text-sm">
+        <div class="flex items-center justify-center gap-4 sm:gap-6 text-sm flex-wrap">
           <div class="flex flex-col items-center gap-0.5">
             <span class="font-bold text-lg font-mono" style="color: var(--text-primary)">{{ totalPosts }}</span>
             <span style="color: var(--text-muted)">Snippets</span>
@@ -57,6 +58,13 @@
             <span class="font-bold text-lg font-mono" style="color: var(--text-primary)">{{ totalViews }}</span>
             <span style="color: var(--text-muted)">Views</span>
           </div>
+          <template v-if="isSelf">
+            <div class="w-px h-8" style="background: var(--color-border)" />
+            <div class="flex flex-col items-center gap-0.5">
+              <span class="font-bold text-lg font-mono" style="color: var(--text-primary)">{{ bookmarkedPosts.length }}</span>
+              <span style="color: var(--text-muted)">Saved</span>
+            </div>
+          </template>
         </div>
 
         <!-- Edit profile button (own profile) -->
@@ -67,11 +75,55 @@
         >Edit Profile</NuxtLink>
       </div>
 
-      <!-- Posts grid -->
-      <h2 class="text-lg font-semibold mb-4" style="color: var(--text-primary)">
-        Snippets by {{ profile.name }}
-      </h2>
-      <PostList :posts="posts" :loading="postsLoading" :empty-message="`${profile.name} hasn't shared any snippets yet.`" />
+      <!-- Tabs -->
+      <div class="flex flex-col sm:flex-row gap-1 mb-5 p-1 rounded-xl bg-surface-hover border border-surface-border">
+        <button
+          @click="activeTab = 'snippets'"
+          class="flex-1 px-5 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-between sm:justify-center gap-2"
+          :class="activeTab === 'snippets' ? 'bg-accent text-white shadow-sm' : 'text-secondary hover:bg-surface-card'"
+        >
+          <span>Snippets</span>
+          <span
+            class="text-xs px-1.5 py-0.5 rounded-full font-mono"
+            :class="activeTab === 'snippets' ? 'bg-white/20 text-white' : 'bg-surface-card border border-surface-border text-muted'"
+          >{{ totalPosts }}</span>
+        </button>
+        <button
+          v-if="isSelf"
+          @click="onBookmarksTab"
+          class="flex-1 px-5 py-2.5 sm:py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-between sm:justify-center gap-2"
+          :class="activeTab === 'bookmarks' ? 'bg-accent text-white shadow-sm' : 'text-secondary hover:bg-surface-card'"
+        >
+          <span>Bookmarks</span>
+          <span
+            v-if="bookmarkedPosts.length || bookmarksLoaded"
+            class="text-xs px-1.5 py-0.5 rounded-full font-mono"
+            :class="activeTab === 'bookmarks' ? 'bg-white/20 text-white' : 'bg-surface-card border border-surface-border text-muted'"
+          >{{ bookmarkedPosts.length }}</span>
+        </button>
+      </div>
+
+      <!-- Snippets tab -->
+      <template v-if="activeTab === 'snippets'">
+        <PostList
+          :posts="posts"
+          :loading="postsLoading"
+          :empty-message="`${profile.name} hasn't shared any snippets yet.`"
+        />
+      </template>
+
+      <!-- Bookmarks tab -->
+      <template v-else-if="activeTab === 'bookmarks'">
+        <div v-if="bookmarksLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <LoadingSkeleton v-for="i in 3" :key="i" class="h-48 rounded-xl" />
+        </div>
+        <PostList
+          v-else
+          :posts="bookmarkedPosts"
+          :loading="false"
+          empty-message="You haven't saved any snippets yet."
+        />
+      </template>
     </template>
   </div>
 </template>
@@ -88,9 +140,16 @@ const { user: me } = useAuth()
 const isSelf = computed(() => me.value?.id === userId)
 
 const profile = ref<User | null>(null)
-const posts = ref<Post[]>([])
+const posts   = ref<Post[]>([])
 const pending = ref(true)
 const postsLoading = ref(false)
+
+const activeTab = ref<'snippets' | 'bookmarks'>('snippets')
+
+// Bookmarks
+const bookmarkedPosts  = ref<Post[]>([])
+const bookmarksLoading = ref(false)
+const bookmarksLoaded  = ref(false)
 
 const totalPosts = computed(() => posts.value.length)
 const totalLikes = computed(() => posts.value.reduce((s, p) => s + (p.likes?.length ?? 0), 0))
@@ -115,4 +174,23 @@ onMounted(async () => {
     pending.value = false
   }
 })
+
+async function onBookmarksTab() {
+  activeTab.value = 'bookmarks'
+  if (bookmarksLoaded.value) return
+  bookmarksLoading.value = true
+  try {
+    const { getBookmarks, getPost } = await import('~/services/api')
+    const bms = await getBookmarks()
+    const results = await Promise.allSettled(bms.map(b => getPost(b.post_id)))
+    bookmarkedPosts.value = results
+      .filter((r): r is PromiseFulfilledResult<Post> => r.status === 'fulfilled')
+      .map(r => r.value)
+    bookmarksLoaded.value = true
+  } catch {
+    bookmarkedPosts.value = []
+  } finally {
+    bookmarksLoading.value = false
+  }
+}
 </script>
