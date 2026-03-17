@@ -2,7 +2,7 @@ import type { Translations } from './en'
 
 export const ru: Translations = {
   nav: {
-    browse: 'Обзор',
+    browse: 'Сниппеты',
     trending: 'В тренде',
     bookmarks: 'Закладки',
     new: '+ Создать',
@@ -14,7 +14,7 @@ export const ru: Translations = {
   },
   home: {
     description: 'Делитесь кодом, открывайте для себя новое, учитесь у других.',
-    browse: 'Обзор',
+    browse: 'Сниппеты',
     shareCode: 'Поделиться',
     joinCommunity: 'Присоединиться',
     stats: {
@@ -29,7 +29,7 @@ export const ru: Translations = {
     resultsFor: 'Результаты: "{q}"',
   },
   posts: {
-    title: 'Обзор',
+    title: 'Сниппеты',
     new: '+ Создать',
     searchPlaceholder: 'Поиск по названию…',
     allLanguages: 'Все языки',
@@ -41,7 +41,7 @@ export const ru: Translations = {
   },
   post: {
     notFound: 'Запись не найдена',
-    backToBrowse: 'К обзору',
+    backToBrowse: 'К сниппетам',
     like: 'Лайк',
     unlike: 'Убрать лайк',
     loginToLike: 'Войдите',

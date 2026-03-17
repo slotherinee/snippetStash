@@ -1,6 +1,6 @@
 export const en = {
   nav: {
-    browse: 'Browse',
+    browse: 'Snippets',
     trending: 'Trending',
     bookmarks: 'Bookmarks',
     new: '+ New',
@@ -11,8 +11,9 @@ export const en = {
     logout: 'Logout',
   },
   home: {
-    description: 'Share, discover, and learn from code. A community-driven library of reusable code.',
-    browse: 'Browse',
+    description:
+      'Share, discover, and learn from code. A community-driven library of reusable code.',
+    browse: 'Snippets',
     shareCode: 'Share Code',
     joinCommunity: 'Join the Community',
     stats: {
@@ -27,7 +28,7 @@ export const en = {
     resultsFor: 'Results for "{q}"',
   },
   posts: {
-    title: 'Browse',
+    title: 'Snippets',
     new: '+ New',
     searchPlaceholder: 'Search by title…',
     allLanguages: 'All languages',
@@ -39,7 +40,7 @@ export const en = {
   },
   post: {
     notFound: 'Snippet not found',
-    backToBrowse: 'Back to Browse',
+    backToBrowse: 'Back to Snippets',
     like: 'Like',
     unlike: 'Unlike',
     loginToLike: 'Login to like',

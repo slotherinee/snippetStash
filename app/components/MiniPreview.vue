@@ -11,6 +11,7 @@
     <iframe
       v-if="shouldRender"
       :srcdoc="srcdoc"
+      title="Code preview"
       sandbox="allow-scripts"
       class="absolute top-0 left-0 border-0 pointer-events-none"
       :style="{

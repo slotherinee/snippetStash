@@ -80,8 +80,19 @@ body {
 
 /* ── Global utilities ──────────────────────────────────────────────────── */
 .btn-primary {
-  @apply px-4 py-2 bg-accent font-semibold rounded-lg hover:bg-accent/90 transition-colors;
-  color: whitesmoke;
+  @apply px-4 py-2 font-semibold rounded-lg transition-colors;
+  background: #58a6ff;
+  color: #0d1117;
+}
+.btn-primary:hover {
+  background: #79b8ff;
+}
+[data-theme='light'] .btn-primary {
+  background: #58a6ff;
+  color: #ffffff;
+}
+[data-theme='light'] .btn-primary:hover {
+  background: #79b8ff;
 }
 .btn-ghost {
   @apply px-3 py-1.5 rounded-lg transition-colors;

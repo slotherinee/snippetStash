@@ -44,6 +44,7 @@
             <iframe
               :key="reloadKey"
               :srcdoc="srcdoc"
+              :title="props.title ?? 'Live preview'"
               sandbox="allow-scripts"
               class="w-full h-full border-0"
             />

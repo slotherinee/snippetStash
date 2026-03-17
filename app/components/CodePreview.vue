@@ -23,6 +23,7 @@
       <iframe
         :key="reloadKey"
         :srcdoc="srcdoc"
+        title="Live code preview"
         sandbox="allow-scripts"
         class="w-full h-full border-0"
       />

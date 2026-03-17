@@ -27,7 +27,7 @@
         class="bg-surface-card border border-surface-border rounded-xl p-4 text-center stat-card"
       >
         <div class="text-3xl font-bold text-accent font-mono">{{ stat.value }}</div>
-        <div class="text-sm mt-1" style="color: var(--text-muted)">{{ stat.label }}</div>
+        <div class="text-sm mt-1" style="color: var(--text-secondary)">{{ stat.label }}</div>
       </div>
     </section>
 

@@ -25,7 +25,7 @@
         <button
           @click="toggleLocale"
           class="hidden sm:flex w-8 h-8 rounded-lg items-center justify-center text-xs font-mono font-bold transition-colors hover:bg-surface-hover"
-          style="color: var(--text-muted)"
+          style="color: var(--text-secondary)"
           :title="locale === 'en' ? 'Switch to Russian' : 'Switch to English'"
         >{{ locale === 'en' ? 'RU' : 'EN' }}</button>
 
