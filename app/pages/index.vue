@@ -54,7 +54,7 @@ import { getPosts, getUsers } from '~/services/api'
 
 definePageMeta({ layout: 'default' })
 useHead({
-  title: 'SnippetStash — Share & Discover Code Snippets',
+  title: 'Share & Discover Code Snippets',
   meta: [
     { name: 'description', content: 'A community-driven library of reusable code snippets. Share, discover, and learn from HTML, CSS, JavaScript and more.' },
     { property: 'og:title', content: 'SnippetStash — Share & Discover Code Snippets' },
