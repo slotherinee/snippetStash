@@ -119,7 +119,7 @@
                   </NuxtLink>
 
                   <!-- Delete -->
-                  <template v-if="isAdmin">
+                  <template v-if="canEdit">
                     <div class="border-t mx-3 my-1" style="border-color: var(--color-border)" />
                     <button @click="handleDelete(); actionsOpen = false" class="action-item w-full text-red-400 hover:text-red-400">
                       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
